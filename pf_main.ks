@@ -128,7 +128,7 @@ Print "Checking vertex at" +activeVertex[0].
     run gs_bearing(p1,vertex[0]).
     set gsbear to result.
     run gs_destination(p1,gsbear,samplerate,body:radius).
-    set p2 to result.
+    set p2 to latlng(round(result:lat,5),round(result:lng,5)).
     if p2:terrainheight < 0 {
      set swimming to true.
      print "Can't cross water at "+p2.
@@ -145,7 +145,7 @@ Print "Checking vertex at" +activeVertex[0].
     set cost to cost + gsdist + (slopefactor*abs(p1:terrainheight-vertex[0]:terrainheight)/gsdist).
     if vertex:length < 5 {
      set vertex[1] to vertex[1]+1.
-     vertex:add(activevertex[4]+cost).
+     vertex:add(round(activevertex[4]+cost,5)).
      vertex:add(activevertex[2]).
      vertex:add(activevertex[3]).
      Set listmax to visited:length-1.
@@ -190,7 +190,7 @@ Print "Checking vertex at" +activeVertex[0].
       visited:remove(listmin).
      }.
      set vertex[1] to vertex[1]+1.
-     set vertex[4] to activevertex[4]+cost.
+     set vertex[4] to round(activevertex[4]+cost,5).
      set vertex[5] to activevertex[2].
      set vertex[6] to activevertex[3].
      Set listdmax to visited:length-1.
@@ -236,10 +236,6 @@ Print "Checking vertex at" +activeVertex[0].
  visited:remove(0).
  print "select new active vertex".
  set activevertex to visited[0].
-// set vertexcount to vertexcount+1.
-// set timetaken to time-starttime.
-// Print "Time taken: " +Timetaken:clock +"    " at (0,1).
-// print "Vertecies Checked: "+vertexcount+" of "+vertextotal+"     " at (0,2).
  if activevertex = start {}
  else {
   print "create new neighbors list".
@@ -282,16 +278,6 @@ Print "Checking vertex at" +activeVertex[0].
    }.
    set nx to nx + 1.
   }.
-//  print "remove active vertex from neighbors".
-//  set pos to 0.
-//  until pos = neighbors:length {
-//   print "checking neighbors["+pos+"]".
-//  if neighbors[pos] = activevertex {
-//    neighbors:remove(pos).
-//    set pos to neighbors:length-1.
-//   }.
-//   set pos to pos+1.
-//  }.
  }.
 }.
 print "rout calculated".
@@ -309,8 +295,10 @@ Until activevertex = finish {
  }.
  rout:add(activevertex[0]).
 }.
-Log rout to waypoints.
-//any angle smoothing pass
+Log "Set rout to list()." to waypoints.
+For Waypoint in rout {
+Log "rout:add("+waypoint+")." to waypoints.
+}.
 //==============================
 
 
