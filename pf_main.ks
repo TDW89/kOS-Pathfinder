@@ -2,16 +2,10 @@ clearscreen.
 Set startTime to Time.
 print "Started at: "+Time:Clock.
 set slat to ship:latitude.	//start lat.
-set slng to ship:longitude.	//start lng.
-if slng < 0 {
- set slng to (slng+360).
-}.
+set slng to mod(ship:longitude+360,360).	//start lng.
 
 set flat to -90.	//finish lat.
-set flng to 0.		//finish lng.
-if flng < 0 {
- set flng to (flng+360).
-}.
+set flng to mod(0+360,360).		//finish lng.
 
 if body = kerbin or body = eve or body = laythe {
  set water to 1.
